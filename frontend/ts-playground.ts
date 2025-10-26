@@ -8,4 +8,22 @@ const fruitStock: FruitStock = {
 fruitStock.apple = 10;
 fruitStock.banana = 20;
 
-console.log(fruitStock);
+interface Product {
+  [key: `product_${number}`]: string;
+}
+
+const product: Product = {
+  product_1: "apple",
+  product_2: "banana",
+};
+product.product_3 = "cherry";
+
+interface CalcInterface {
+  (a: number, b: number): number;
+}
+
+const calc: CalcInterface = (a, b) => {
+  return a + b;
+};
+
+console.log(calc(1, 2));
