@@ -1,0 +1,112 @@
+{
+  // プロジェクト名を入力
+  "name": "Template For Web App",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "workspace",
+  // docker-compose.ymlにserviceを追加した場合は、ここにservice名を追加する
+  "runServices": ["workspace", "db"],
+  // docker-in-dockerではrootユーザーでコンテナを起動、実行する必要がある
+  "containerUser": "root",
+  "features": {
+    // Node.js
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    // Python
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.13"
+    },
+    "ghcr.io/devcontainers-extra/features/poetry:2": {},
+    // Docker
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  // Gcloudを使用する場合は以下のmountsをコメントアウトし以下のコマンドをDockerfileに追加
+  // RUN mkdir -p /app/.devcontainer/.config/gcloud
+  // "mounts": [
+  //   "source=${localWorkspaceFolder}/.devcontainer/.config/gcloud,target=/home/vscode/.config/gcloud,type=bind,consistency=cached"
+  // ],
+  "workspaceFolder": "/app",
+  "forwardPorts": [3000, 8000],
+  "postCreateCommand": "/bin/bash ./.devcontainer/postCreateCommand.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // frontend
+        "dsznajder.es7-react-js-snippets",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag",
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        // python
+        "ms-python.black-formatter",
+        "ms-python.flake8",
+        "ms-python.isort",
+        "njpwerner.autodocstring",
+        "tamasfe.even-better-toml",
+        // SQL
+        "inferrinizzard.prettier-sql-vscode",
+        // common
+        "oderwat.indent-rainbow",
+        "streetsidesoftware.code-spell-checker",
+        "mosapride.zenkaku",
+        "github.vscode-github-actions",
+        "yzhang.markdown-all-in-one",
+        "bierner.markdown-mermaid",
+        "GitHub.vscode-pull-request-github"
+      ],
+      "settings": {
+        "eslint.workingDirectories": ["../frontend"],
+        // デフォルトタブサイズは2なので言語ごとに変更したい場合は、言語ごとに設定を上書きしてください
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "[typescript][typescriptreact][html]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.addMissingImports": "explicit",
+            "source.fixAll.eslint": "explicit"
+          }
+        },
+        // code spell checker を無効にするパス
+        // 個別のワードを無視する場合は、cSpell.wordsに追加してください
+        // 例: "cSpell.words": ["example"]
+        "cSpell.ignorePaths": [
+          ".devcontainer/devcontainer.json",
+          ".vscode",
+          "README.md",
+          "frontend/package.json",
+          "frontend/README.md"
+        ],
+        "[json][jsonc]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "black-formatter.path": ["black"],
+        "black-formatter.args": [
+          "--config=${workspaceFolder}/backend/pyproject.toml"
+        ],
+        "flake8.args": [
+          "--toml-config=${workspaceFolder}/backend/pyproject.toml"
+        ],
+        "flake8.path": ["flake8p"],
+        "isort.args": [
+          "--settings",
+          "${workspaceFolder}/backend/pyproject.toml"
+        ],
+        "[sql]": {
+          "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  }
+}
