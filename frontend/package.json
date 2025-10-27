@@ -13,7 +13,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "ts-run": "tsc --noEmit ts-playground.ts && ts-node ts-playground.ts"
+    "ts-run": "tsc --noEmit playground/ts-playground.ts && npx tsx playground/ts-playground.ts"
   },
   "dependencies": {
     "next": "^15.3.3",
