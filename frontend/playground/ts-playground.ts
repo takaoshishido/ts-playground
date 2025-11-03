@@ -681,3 +681,22 @@ let recordColor: Record<PrimaryColors, RGB2 | string>;
 // const person170 = new Person170("John", 30);
 // console.log(person170.getName);
 // console.log(person170.getAge);
+
+// let ageTest = 10;
+// ageTest = null;
+
+// class Japanese {
+//   name: string;
+//   nationality: string;
+//   constructor(name: string, nationality: string) {
+//     this.name = name;
+//     // this.nationality = nationality;
+//   }
+// }
+
+// const japanese = new Japanese("John", "Japan");
+// console.log(japanese.name);
+// console.log(japanese.nationality);
+
+// import { add } from "./exportSample";
+// console.log(add(1, 2));

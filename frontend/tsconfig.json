@@ -1,19 +1,33 @@
 {
   "compilerOptions": {
+    // jsファイルでの型チェックを有効にする
+    "checkJs": true,
+    // nullを許可する
+    // "strictNullChecks": false,
+    // プロパティの初期化を強制する
+    "strictPropertyInitialization": true,
+    "outDir": "./dist",
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    // ソースマップを生成する
+    "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    // 型定義ファイルを生成する
+    "declaration": true,
+    // 型定義ファイルのマップを生成する
+    "declarationMap": true,
     // commonjsとesmを混在させるために必要
     "esModuleInterop": true,
+    // 最新仕様
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
+    // "incremental": true,
     "plugins": [
       {
         "name": "next"

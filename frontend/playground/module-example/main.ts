@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Point, Rectangle, Shape } from "./calc";
-
 const r = new Rectangle(10, 20);
 // console.log(r.area);
 // console.log(square(5));
