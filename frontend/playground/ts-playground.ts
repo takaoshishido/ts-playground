@@ -161,25 +161,33 @@ class SuperClass {
 // p.79 クラス　constructorのオーバーライド
 class Parent {
   public name: string;
+  protected age: number;
 
-  constructor(name: string) {
+  constructor(name: string, age: number) {
     this.name = name;
-
-    // 初期化時に発火する
+    this.age = age;
+    // 初期化時に発火する;
     // console.log(`Parent constructor: ${name}`);
+  }
+  private getName(): string {
+    return this.name;
   }
 }
 
 class Child extends Parent {
+  age: number;
   constructor(name: string, age: number) {
-    super(name);
+    super(name, age);
+    this.age = age;
     // console.log(`Child constructor: ${name} ${age}`);
   }
 }
-
+const parent2 = new Parent("John", 30);
 const child = new Child("John", 10);
-
+// ↓これはエラー
+// console.log(child.getName());
 // console.log(child.name);
+// console.log(parent2.age);
 
 class User {
   constructor(
@@ -200,6 +208,7 @@ user.getPassword("password");
 const adultAge = 18;
 
 let age: number;
+
 // eslint-disable-next-line prefer-const
 age = adultAge;
 
@@ -424,3 +433,251 @@ deepCopy.profile.address.postCode = "100-0001";
 //     address: { city: 'Osaka', country: 'Japan', postCode: '100-0001' }
 //   }
 // }
+
+// p.83 classの省略記法
+class Person83 {
+  constructor(
+    public name: string,
+    private age: number,
+    protected gender: string
+  ) {}
+  sayHello() {
+    console.log(`Hello, my name is ${this.name} and I am ${this.age} years old. I am ${this.gender}.`);
+  }
+}
+
+const person83 = new Person83("John", 30, "male");
+// person83.sayHello();
+// console.log(person83.name);
+// console.log(person83.age);
+// console.log(person83.gender);
+
+// get set
+class Person84 {
+  constructor(private _name: string) {}
+  get getName() {
+    return this._name;
+  }
+  set setName(name: string) {
+    name = name.toUpperCase();
+    this._name = name;
+  }
+}
+
+const person84 = new Person84("John");
+// console.log(person84.getName);
+person84.setName = "Jane";
+// console.log(person84.getName);
+
+// static
+const count = 3;
+
+class Person85 {
+  static count = 0;
+  constructor() {
+    Person85.count++;
+  }
+}
+
+const person85 = new Person85();
+// console.log(Person85.count);
+
+class Person86 extends Person85 {
+  name: string;
+  constructor(name: string) {
+    super();
+    this.name = name;
+    // console.log("hoge");
+  }
+}
+
+const person86 = new Person86("John");
+// console.log(Person86.count);
+
+// 抽象クラス
+abstract class Animal2 {
+  abstract makeSound(): void;
+  move(): void {
+    // console.log("moving...");
+  }
+}
+
+class Dog extends Animal2 {
+  // 抽象メソッドをオーバーライドしないとエラー
+  makeSound(): void {
+    // console.log("woof");
+  }
+}
+
+const dog = new Dog();
+dog.makeSound();
+dog.move();
+
+// interface と class
+interface DogInterface {
+  name: string;
+  age: number;
+  makeSound(): void;
+  move(): void;
+}
+
+class Dog3 implements DogInterface {
+  name: string;
+  age: number;
+  makeSound(): void {
+    console.log("woof");
+  }
+  move(): void {
+    console.log("moving...");
+  }
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+// p.105
+interface Person105 {
+  name: string;
+  age: number;
+}
+interface Student105 extends Person105 {
+  club: string;
+}
+const fn3 = (person: Person105) => {
+  // console.log(`That person's name is ${person.name} and age is ${person.age}.`);
+};
+let fn4 = (student: Student105) => {
+  console.log(
+    `That student's name is ${student.name} and age is ${student.age}. He/She is a member of ${student.club}.`
+  );
+};
+fn4 = fn3;
+fn4({ name: "Jane", age: 20, club: "Club A" });
+
+const PI = 3.14 as const;
+let num = PI;
+num = 3.14;
+// ↓これはエラー
+// num = 2.3
+
+// ユーザー定義型ガード
+function isNumber(value: unknown): value is number {
+  return typeof value === "number";
+}
+function testUserDefinedTypeGuard(value: unknown) {
+  if (isNumber(value)) {
+    // console.log(value);
+  }
+}
+testUserDefinedTypeGuard(123);
+testUserDefinedTypeGuard("123");
+
+// DOM APIと型アサーション
+// const someElement = document.querySelector(".some-element");
+
+// p.132 ジェネリクス
+function getFirstListItem<T>(items: T[]) {
+  return items[0];
+}
+
+const firstItem = getFirstListItem(["apple", "banana", "cherry"]);
+// console.log(firstItem);
+
+function createPair<T = number, U = number>(v1: T, v2: U): [T, U] {
+  if (typeof v1 === "number" && typeof v2 === "number") {
+    return [(v1 + 1) as T, (v2 + 1) as U];
+  }
+  return [v1, v2];
+}
+
+const pair = createPair(12, 123);
+// console.log(pair);
+
+// p.136 ジェネリックインターフェース
+interface Pair<T = string, U = number> {
+  first: T;
+  second: U;
+}
+
+const pair2: Pair = {
+  first: "hello",
+  second: 123,
+};
+// ↓これはデフォルト型に違反しているのでエラー
+// const pair3: Pair = {
+//   first: 123,
+//   second: "hello",
+// };
+// console.log(pair2);
+
+// p.139 ジェネリッククラス
+class Queue<T> {
+  private items: T[] = [];
+  add(item: T) {
+    this.items.push(item);
+  }
+  remove() {
+    return this.items.shift();
+  }
+}
+
+const queue = new Queue<string>();
+queue.add("apple");
+queue.add("banana");
+queue.add("cherry");
+// console.log(queue.remove());
+// console.log(queue.remove());
+
+function getSpecificProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const obj = {
+  name: "John",
+  age: 30,
+};
+const nameProp = getSpecificProperty(obj, "name");
+// console.log(nameProp);
+const ageProp = getSpecificProperty(obj, "age");
+// console.log(ageProp);
+// ↓これはエラー
+// console.log(getSpecificProperty(obj, "gender"));
+
+// Record型
+type RGB2 = [red: number, green: number, blue: number];
+interface Color {
+  red: RGB2 | string;
+  green: RGB2 | string;
+  blue: RGB2 | string;
+}
+
+const color: Color = {
+  red: [255, 0, 0],
+  green: [0, 255, 0],
+  blue: [0, 0, 255],
+};
+
+type PrimaryColors = "red" | "green" | "blue";
+let recordColor: Record<PrimaryColors, RGB2 | string>;
+
+// p.170 auto-accessor（以下のエラーが出るのでコメントアウト）
+// Private identifiers are only available when targeting ECMAScript 2015 and higher.
+// class Person170 {
+//   #name: string;
+//   #age: number;
+//   constructor(name: string, age: number) {
+//     this.#name = name;
+//     this.#age = age;
+//   }
+//   get getName() {
+//     return this.#name;
+//   }
+//   get getAge() {
+//     return this.#age;
+//   }
+// }
+
+// const person170 = new Person170("John", 30);
+// console.log(person170.getName);
+// console.log(person170.getAge);
