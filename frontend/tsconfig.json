@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    // commonjsとesmを混在させるために必要
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
